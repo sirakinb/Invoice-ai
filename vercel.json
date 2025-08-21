@@ -1,7 +1,28 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
   "functions": {
-    "api/*.ts": {
-      "runtime": "@vercel/node"
+    "api/**/*.ts": {
+      "runtime": "nodejs18.x"
     }
   },
   "headers": [
@@ -21,18 +42,6 @@
           "value": "Content-Type, Authorization"
         }
       ]
-    }
-  ],
-  "builds": [
-    {
-      "src": "api/*.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
     }
   ]
 }

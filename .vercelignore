@@ -14,6 +14,9 @@ expo-env.d.ts
 babel.config.js
 metro.config.js
 
+# Keep public/ folder for static files
+!public/
+
 # Root package.json (use api/package.json instead)
 package.json
 package-lock.json

@@ -1,6 +1,6 @@
 import { ParseInvoiceResponse, CreatePaymentResponse, Invoice } from '../types';
 
-const API_BASE_URL = 'https://your-api-endpoint.com'; // Replace with your actual API endpoint
+const API_BASE_URL = 'https://invoice-ai-lemon.vercel.app'; // Your live Vercel API
 
 export const parseInvoiceFromText = async (text: string): Promise<ParseInvoiceResponse> => {
   try {
@@ -9,15 +9,47 @@ export const parseInvoiceFromText = async (text: string): Promise<ParseInvoiceRe
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ transcript: text }), // Match the API expectation
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
-    return data;
+    const invoiceData = await response.json();
+    
+    // Transform the API response to match our app's expected format
+    const invoice = {
+      fromName: invoiceData.from.name,
+      fromEmail: invoiceData.from.email || 'billing@yourcompany.com',
+      toName: invoiceData.to.name,
+      toEmail: invoiceData.to.email || 'client@example.com',
+      lineItems: invoiceData.items.map((item: any, index: number) => ({
+        id: (index + 1).toString(),
+        description: item.description,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        total: item.quantity * item.unitPrice,
+      })),
+      currency: invoiceData.currency,
+      taxPercentage: invoiceData.taxPercent || 0,
+      discountAmount: invoiceData.discount || 0,
+      subtotal: invoiceData.items.reduce((sum: number, item: any) => sum + (item.quantity * item.unitPrice), 0),
+      taxAmount: 0, // Will be calculated
+      total: 0, // Will be calculated
+      dueDate: invoiceData.dueDate,
+      notes: invoiceData.notes || 'Payment due within 14 days',
+    };
+    
+    // Calculate totals
+    invoice.taxAmount = (invoice.subtotal - invoice.discountAmount) * (invoice.taxPercentage / 100);
+    invoice.total = invoice.subtotal - invoice.discountAmount + invoice.taxAmount;
+
+    return {
+      success: true,
+      invoice,
+      message: `Got it! I've created an invoice for ${invoice.toName} with ${invoice.lineItems.length} item(s).`,
+    };
   } catch (error) {
     console.error('Error parsing invoice:', error);
     return {
@@ -40,7 +72,7 @@ export const createStripePayment = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        amount: Math.round(amount * 100), // Convert to cents
+        amount, // API handles conversion to cents
         currency: currency.toLowerCase(),
         description,
         metadata,
@@ -52,7 +84,10 @@ export const createStripePayment = async (
     }
 
     const data = await response.json();
-    return data;
+    return {
+      success: true,
+      paymentUrl: data.url,
+    };
   } catch (error) {
     console.error('Error creating payment:', error);
     return {

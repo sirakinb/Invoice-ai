@@ -18,7 +18,7 @@ import { ChatMessage, Invoice } from './types';
 import { ChatBubble } from './components/ChatBubble';
 import { InvoiceReviewForm } from './components/InvoiceReviewForm';
 import { SoundWaveIcon } from './components/SoundWaveIcon';
-import { mockParseInvoice, mockCreatePayment } from './utils/api';
+import { parseInvoiceFromText, createStripePayment } from './utils/api';
 import { generateInvoiceNumber } from './utils/invoice';
 import { generateAndSharePDF, printPDF } from './utils/pdfGenerator';
 import { startVoiceInput, speakInvoiceConfirmation, processVoiceInputForInvoice } from './utils/voiceInput';
@@ -68,8 +68,8 @@ export default function App() {
     setIsLoading(true);
 
     try {
-      // Simulate API call - replace with actual API call
-      const response = mockParseInvoice(userMessage);
+      // Call the real API
+      const response = await parseInvoiceFromText(userMessage);
       
       if (response.success && response.invoice) {
         // Add invoice number if not present
@@ -87,9 +87,10 @@ export default function App() {
           addMessage("Would you like to review and edit the invoice details, or shall I generate it as is?", false);
         }, 1000);
       } else {
-        addMessage(response.message, false);
+        addMessage(response.message || "Sorry, I couldn't process your request. Please try again.", false);
       }
     } catch (error) {
+      console.error('API Error:', error);
       addMessage("Sorry, I encountered an error processing your request. Please try again.", false);
     } finally {
       setIsLoading(false);
@@ -109,7 +110,12 @@ export default function App() {
     
     try {
       // Create payment link
-      const paymentResponse = mockCreatePayment();
+      const paymentResponse = await createStripePayment(
+        invoice.total,
+        invoice.currency.toLowerCase(),
+        `Invoice ${invoice.invoiceNumber}`,
+        { invoiceNumber: invoice.invoiceNumber }
+      );
       
       if (paymentResponse.success && paymentResponse.paymentUrl) {
         const invoiceWithPayment = {

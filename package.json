@@ -9,16 +9,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-picker/picker": "^2.8.0",
     "expo": "~53.0.20",
-    "expo-status-bar": "~2.2.3",
+    "expo-file-system": "~18.1.11",
     "expo-print": "~14.1.4",
     "expo-sharing": "~13.1.5",
-    "expo-file-system": "~18.1.11",
     "expo-speech": "~13.1.7",
+    "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.5",
     "react-native-qrcode-svg": "^6.3.0",
-    "@react-native-picker/picker": "^2.8.0",
     "react-native-svg": "15.11.2"
   },
   "devDependencies": {

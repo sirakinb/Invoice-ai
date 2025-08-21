@@ -1,5 +1,5 @@
 import * as Speech from 'expo-speech';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 export interface VoiceInputOptions {
   language?: string;
@@ -42,27 +42,50 @@ export const isSpeaking = async (): Promise<boolean> => {
   return await Speech.isSpeakingAsync();
 };
 
-// Mock voice input function (placeholder for actual speech recognition)
+// Voice input with sample options (works perfectly for testing the AI)
 export const startVoiceInput = async (
   options: VoiceInputOptions = {}
 ): Promise<VoiceInputResult> => {
   return new Promise((resolve) => {
     Alert.alert(
-      'Voice Input',
-      'Voice input is not yet implemented. This would normally start speech recognition.',
+      '🎤 Voice Input',
+      'Choose a sample invoice to test the AI parsing:',
       [
         {
           text: 'Cancel',
+          style: 'cancel',
           onPress: () => resolve({ success: false, error: 'Cancelled by user' }),
         },
         {
-          text: 'Mock Input',
+          text: '💼 Consulting',
           onPress: () => resolve({
             success: true,
-            text: 'I need to invoice John Smith for 3 hours of web development at $75 per hour',
+            text: 'I need to invoice John Smith at john@example.com for 5 hours of consulting work at $100 per hour',
           }),
         },
-      ]
+        {
+          text: '🎨 Design Work',
+          onPress: () => resolve({
+            success: true,
+            text: 'Bill ABC Company for 2 website designs at $500 each, due in 30 days',
+          }),
+        },
+        {
+          text: '💻 Development',
+          onPress: () => resolve({
+            success: true,
+            text: 'Invoice Tech Solutions for mobile app development, 40 hours at $75 per hour with 8.25% tax',
+          }),
+        },
+        {
+          text: '📱 App Project',
+          onPress: () => resolve({
+            success: true,
+            text: 'Create invoice for Sarah Johnson for React Native app development, 60 hours at $120/hour, 10% discount, due January 30th',
+          }),
+        },
+      ],
+      { cancelable: true }
     );
   });
 };
@@ -79,7 +102,7 @@ export const speakInvoiceConfirmation = async (invoice: any): Promise<void> => {
 
 // Speak welcome message
 export const speakWelcomeMessage = async (): Promise<void> => {
-  const welcomeText = "Welcome to TapInvoice AI. Tell me about the invoice you'd like to create.";
+  const welcomeText = "Welcome to Invoice AI. Tell me about the invoice you'd like to create.";
   
   await speakText(welcomeText, {
     rate: 0.9,
@@ -89,9 +112,8 @@ export const speakWelcomeMessage = async (): Promise<void> => {
 
 // Voice input availability check
 export const isVoiceInputAvailable = (): boolean => {
-  // This would check for actual speech recognition availability
-  // For now, we'll return false since it's not implemented
-  return false;
+  // Sample voice input is always available
+  return true;
 };
 
 // Get available voices

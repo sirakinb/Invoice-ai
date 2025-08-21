@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice AI API</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .endpoint { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin: 15px 0;
+            border-left: 4px solid #007AFF;
+        }
+        code { 
+            background: #e8e8e8; 
+            padding: 2px 6px; 
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .active { background: #d4edda; color: #155724; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Invoice AI API</h1>
+    <p><span class="status active">✅ API ACTIVE</span></p>
+    
+    <p>Serverless API endpoints for the Invoice AI React Native app.</p>
+    
+    <div class="endpoint">
+        <h3>POST /api/parse-invoice</h3>
+        <p><strong>Purpose:</strong> Convert natural language to structured invoice data using OpenAI GPT-4</p>
+        <p><strong>Input:</strong> <code>{"transcript": "Invoice John for 5 hours at $100/hour"}</code></p>
+        <p><strong>Output:</strong> Structured invoice JSON</p>
+    </div>
+    
+    <div class="endpoint">
+        <h3>POST /api/create-payment</h3>
+        <p><strong>Purpose:</strong> Create Stripe Checkout session for invoice payment</p>
+        <p><strong>Input:</strong> <code>{"amount": 500, "currency": "usd", "description": "Invoice #123"}</code></p>
+        <p><strong>Output:</strong> <code>{"success": true, "paymentUrl": "https://checkout.stripe.com/..."}</code></p>
+    </div>
+    
+    <h3>📱 Mobile App</h3>
+    <p>This API powers the <strong>Invoice AI</strong> React Native mobile app.</p>
+    
+    <p><small>🔗 <a href="https://github.com/sirakinb/Invoice-ai">View on GitHub</a></small></p>
+</body>
+</html>
