@@ -2,6 +2,7 @@
 App.tsx
 app.json
 index.ts
+index.js
 assets/
 components/
 types/
@@ -9,9 +10,12 @@ utils/
 ios/
 android/
 .expo/
+expo-env.d.ts
+babel.config.js
+metro.config.js
 
-# Dependencies
-node_modules/
+# Root package.json (use api/package.json instead)
+package.json
 package-lock.json
 yarn.lock
 
@@ -45,5 +49,5 @@ web-build/
 .env.test.local
 .env.production.local
 
-# README (optional, can be included if you want)
+# Documentation files
 README.md
