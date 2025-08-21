@@ -1,0 +1,33 @@
+{
+  "name": "invoice-ai-api",
+  "version": "1.0.0",
+  "description": "Serverless API functions for Invoice AI",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "tsc",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "openai": "^4.63.0",
+    "stripe": "^17.3.1"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.2.17",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.8.6"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "vercel",
+    "serverless",
+    "api",
+    "openai",
+    "stripe",
+    "invoice"
+  ],
+  "author": "Invoice AI",
+  "license": "MIT"
+}

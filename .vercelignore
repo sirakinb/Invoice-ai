@@ -1,0 +1,49 @@
+# React Native / Expo files (not needed for API deployment)
+App.tsx
+app.json
+index.ts
+assets/
+components/
+types/
+utils/
+ios/
+android/
+.expo/
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Development files
+.git/
+.gitignore
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+web-build/
+
+# Environment files (these should be set in Vercel dashboard)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# README (optional, can be included if you want)
+README.md
